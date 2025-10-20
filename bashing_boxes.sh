@@ -21,26 +21,23 @@ print_object_at_posistion(){
 print_object_at_posistion
 
 add_new_item(){
-	read -p "Please add your desired word to the list " answer
+	read -p "Please add your desired word to the list: " answer
 	array_of_objects+=("$answer")
 	echo "The updated list is now: ${array_of_objects[@]}"
-	#read -p "Would you like to add a new object to the list? yes/no" answer
-	#if [ "$answer" = "yes" ]; then
-		#echo "Please type in your desired below: " response
-		#echo "The updated list is now: ${array_of_objects[@]}"
-	#elif [ "$answer" = "no" ]; then
-		#exit
-	#fi
 }
 
 add_new_item
 
-delete_last_item(){
-	read -p "Would you like to add a new object to the list? yes/no" answer
-	#if [ "$answer" = "yes" ]; then
-		#echo "Please type in your desired below: " response
-		#echo "The updated list is now: ${array_of_objects[@]}"
-	#elif [ "$answer" = "no" ]; then
-		#exit
-	#fi
+remove_last_item(){
+	unset 'array_of_objects[-1]'
+	echo "Your desired word has been removed"
+	echo "The updated list is now: ${array_of_objects[@]}"
 }
+remove_last_item
+
+delete_item(){
+	read -p "Please type in the world you would like to delete below: " response
+	unset "array_of_objects[$response]"
+	echo "The updated list is now: ${array_of_objects[@]}"
+}
+delete_item
