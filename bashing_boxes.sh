@@ -1,8 +1,7 @@
  #!/bin/bash
  array_of_objects=( "Milkshake" "Magazine" "Notebook" "Waffle iron" "Bottle opener" "Barley" "Cassette tape" "Accordion" "Bus" "Cucumber")
-flag=false
 echo "1. View all items"
-    echo "2. View an item by position"
+    echo "2. Print word at position"
     echo "3. Add a new word"
     echo "4. Delete the last word"
     echo "5. Delete a word by position"
@@ -16,7 +15,6 @@ echo "1. View all items"
 print_all_objects(){
 	echo "The list is as follow below:"
 	echo "${array_of_objects[@]}"
-	flag=true
 }
 
 print_all_objects
@@ -24,17 +22,14 @@ print_all_objects
 
 2)
 print_object_at_position(){
-	
-	if [ "$flag" = "true" ]; then
 	read -p "please pick a number between 0-9: " position
 	echo "item at $position is: ${array_of_objects[$position]} "
-	fi
 }
+
+print_object_at_position
 ;;
 
 3)
-print_object_at_position
-
 add_new_item(){
 	read -p "Please add your desired word to the list: " answer
 	array_of_objects+=("$answer")
