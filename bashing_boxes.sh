@@ -1,5 +1,7 @@
  #!/bin/bash
  array_of_objects=( "Milkshake" "Magazine" "Notebook" "Waffle iron" "Bottle opener" "Barley" "Cassette tape" "Accordion" "Bus" "Cucumber")
+
+ display_menu_options(){
 echo "1. View all items"
     echo "2. Print word at position"
     echo "3. Add a new word"
@@ -8,6 +10,8 @@ echo "1. View all items"
     echo "6. Exit"
     read -p "Choose an option (1-6): " function_choice
     echo
+}
+display_menu_options
 
    case  $function_choice in
 
@@ -21,7 +25,7 @@ print_all_objects
 ;;
 
 2)
-print_object_at_position(){
+print_object_at_position() {
 	read -p "please pick a number between 0-9: " position
 	echo "item at $position is: ${array_of_objects[$position]} "
 }
