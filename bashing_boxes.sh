@@ -93,6 +93,11 @@ delete_item(){
 save_box(){
 	read -p "what do you want to save it as?: " user_save_file_name
 	filepath=" $data_directory/$user_save_file_name.box "
+	{
+		echo "saved_items=(${array_of_objects[@]@Q}"
+
+	} >"$filepath"
+	echo "box save to $filepath"
 }
 
 load_box(){
