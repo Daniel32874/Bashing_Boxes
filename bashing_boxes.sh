@@ -1,5 +1,11 @@
  #!/bin/bash
  array_of_objects=( "Milkshake" "Magazine" "Notebook" "Waffle iron" "Bottle opener" "Barley" "Cassette tape" "Accordion" "Bus" "Cucumber")
+data_directory="./data"
+check_for_directory(){
+	if [ ! -d "$data_directory" ]; then
+		mkdir "$data_directory"
+	fi
+}
 
 display_menu_options(){
 	echo "1. View all items"
@@ -83,7 +89,25 @@ delete_item(){
 	echo "The updated list is now: ${array_of_objects[@]}"
 	display_menu_options
 }
+
+save_box(){
+	read -p "what do you want to save it as?: " user_save_file_name
+	filepath=" $data_directory/$user_save_file_name.box "
+}
+
+load_box(){
+	read -p "what did you name your file as?: " user_response
+	filepath=" $data_directory/$user_response.box "
+	if [ -f "$filepath" ]; then
+		source "$filepath"
+		array_of_objects=("${saved_items[@]}")
+		echo " $user_response loaded"
+		echo "current items: ${array_of_objects[@]}"
+		
+}
+
 end_script(){
 	exit 0
 } 
 display_menu_options
+
