@@ -108,8 +108,9 @@ load_box(){
 		array_of_objects=("${saved_items[@]}")
 		echo " $user_response loaded"
 		echo "current items: ${array_of_objects[@]}"
-		
+	fi
 }
+load_box
 
 end_script(){
 	exit 0
