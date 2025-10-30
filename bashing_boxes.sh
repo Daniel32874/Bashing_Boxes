@@ -13,7 +13,9 @@ display_menu_options(){
     echo "3. Add a new word"
     echo "4. Delete the last word"
     echo "5. Delete a word by position"
-    echo "6. Exit"
+    echo "6. Save file "
+    echo "7. Load file "
+    echo "8. Exit"
     read -p "Choose an option (1-6): " function_choice
     echo
     check_user_input
@@ -49,6 +51,14 @@ check_user_input(){
 		;;
 
 		6)
+		save_box
+		;;
+
+		7)
+		load_box
+		;;
+
+		8)
 
 		end_script
 		;;
@@ -106,11 +116,13 @@ load_box(){
 	if [ -f "$filepath" ]; then
 		source "$filepath"
 		array_of_objects=("${saved_items[@]}")
-		echo " $user_response loaded"
-		echo "current items: ${array_of_objects[@]}"
+		echo " $user_response loaded "
+		echo " current items: ${array_of_objects[@]} "
+		else
+			echo " invalid file name "
 	fi
+	display_menu_options
 }
-load_box
 
 end_script(){
 	exit 0
