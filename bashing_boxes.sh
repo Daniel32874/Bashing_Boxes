@@ -15,8 +15,9 @@ display_menu_options(){
     echo "5. Delete a word by position"
     echo "6. Save file "
     echo "7. Load file "
-    echo "8. Exit"
-    read -p "Choose an option (1-6): " function_choice
+    echo "8. List Boxes "
+    echo "9. Exit"
+    read -p "Choose an option (1-9): " function_choice
     echo
     check_user_input
 }
@@ -60,6 +61,11 @@ check_user_input(){
 
 		8)
 
+		list_boxes
+		;;
+
+		9)
+
 		end_script
 		;;
 
@@ -101,18 +107,18 @@ delete_item(){
 }
 
 save_box(){
-	read -p "what do you want to save it as?: " user_save_file_name
-	filepath=" $data_directory/$user_save_file_name.box "
+	read -p "what do you want to save it as?:" user_save_file_name
+	filepath="$data_directory/$user_save_file_name.box"
 	{
-		echo "saved_items=(${array_of_objects[@]@Q}"
+		echo "saved_items=(${array_of_objects[@]@Q})"
 
 	} >"$filepath"
 	echo "box save to $filepath"
 }
 
 load_box(){
-	read -p "what did you name your file as?: " user_response
-	filepath=" $data_directory/$user_response.box "
+	read -p "what did you name your file as?:" user_response
+	filepath="$data_directory/$user_response.box"
 	if [ -f "$filepath" ]; then
 		source "$filepath"
 		array_of_objects=("${saved_items[@]}")
@@ -124,8 +130,36 @@ load_box(){
 	display_menu_options
 }
 
+list_boxes(){
+	echo "saved boxes:"
+	for file in "$data_directory"/*.box; do
+			if [ -f "$file" ]; then
+					echo "$file"
+			fi
+		done
+		display_menu_options
+}
+
 end_script(){
-	exit 0
+	read -p "Are you sure you want to exit? (y/n): " confirm
+	case $confirm in
+	y)
+
+		save_box
+		;;
+
+	n)
+
+		exit 0
+		;;
+
+	*)
+		exit_script
+	    ;;
+esac
+
 } 
+check_for_directory
 display_menu_options
+
 
