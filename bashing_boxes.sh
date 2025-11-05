@@ -127,5 +127,3 @@ end_script(){
 }
 check_for_directory
 display_menu_options
-
-
