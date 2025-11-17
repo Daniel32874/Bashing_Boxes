@@ -79,9 +79,10 @@ list_boxes(){
 	display_menu_options
 }
 
-#generate_random_box(){	
-# This function is empty right now
-#}
+generate_random_box(){	
+	read -p "How many items will you like to generate?: " amount
+	
+}
 
 end_script(){
 	# Asks if you want to save before quitting
