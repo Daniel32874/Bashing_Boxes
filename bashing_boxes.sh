@@ -6,6 +6,8 @@ array_of_objects=( "Milkshake" "Magazine" "Notebook" "Waffle iron" "Bottle opene
 # This is the folder where saved boxes will go
 data_directory="./data"
 
+object_pool_file="warehouse_of_objects.txt"
+
 print_all_objects(){
 	# Shows all the words in the list
 	echo -e "The list is as follow below:\n${array_of_objects[@]}\n"
@@ -79,9 +81,32 @@ list_boxes(){
 	display_menu_options
 }
 
-generate_random_box(){	
+load_object_pool(){
+	object_pool=()
+
+	if [ ! -f "$object_pool_file" ]; then
+        echo "File not found."
+        return 1
+    fi
+ while read -r line; do
+        # ignore empty lines and lines starting with #
+        if [[ -z "$line" || "$line" == \#* ]]; then
+            continue
+        fi
+
+        object_pool+=("$line")
+    done < "$object_pool_file"
+}
+
+prompt_for_box_size(){
 	read -p "How many items will you like to generate?: " amount
-	
+}
+
+generate_random_box(){	
+	load_object_pool || return
+	prompt_for_box_size || return
+	generate_random_box
+	display_menu_options
 }
 
 end_script(){
