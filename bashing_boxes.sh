@@ -88,26 +88,62 @@ load_object_pool(){
         echo "File not found."
         return 1
     fi
- while read -r line; do
-        # ignore empty lines and lines starting with #
+
+    # read the file one line at a time
+    while read -r line; do
+        
+        # skip lines that are empty or start with "#"
+        # (these lines don’t count as items)
         if [[ -z "$line" || "$line" == \#* ]]; then
             continue
         fi
 
+        # add the line to the list of items
         object_pool+=("$line")
+
     done < "$object_pool_file"
 }
 
 prompt_for_box_size(){
-	read -p "How many items will you like to generate?: " amount
+	read -p "How many items will you like to generate?: " box_size
+
+	# check if the answer is only numbers
+	if ! [[ "$box_size" =~ ^[0-9]+$ ]]; then
+        echo "Please type a number."
+        return 1
+    fi
+
+    # make sure the number is not too small or too big
+    if (( box_size < 1 || box_size > ${#object_pool[@]} )); then
+        echo "Choose a number between 1 and ${#object_pool[@]}."
+        return 1
+    fi
 }
 
-generate_random_box(){	
+generate_random_box() {
+    array_of_objects=()   # start with an empty box
+
+    # mix the items so they are in a random order
+    shuffled=( $(printf "%s\n" "${object_pool[@]}" | shuf) )
+
+    # take the first few items based on the number the user picked
+    for ((i=0; i < box_size; i++)); do
+        array_of_objects+=("${shuffled[$i]}")
+    done
+
+    echo "New random box created!"
+}
+
+generate_random_box_from_file(){	
+	# if loading the file or picking a number fails, stop here
 	load_object_pool || return
 	prompt_for_box_size || return
+
 	generate_random_box
 	display_menu_options
 }
+
+
 
 end_script(){
 	# Asks if you want to save before quitting
