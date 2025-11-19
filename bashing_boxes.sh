@@ -121,25 +121,23 @@ prompt_for_box_size(){
 }
 
 generate_random_box() {
-    array_of_objects=()   # start with an empty box
+    array_of_objects=()
 
-    # mix the items so they are in a random order
-    shuffled=( $(printf "%s\n" "${object_pool[@]}" | shuf) )
+    # shuffle correctly
+    mapfile -t shuffled < <(printf "%s\n" "${object_pool[@]}" | shuf)
 
-    # take the first few items based on the number the user picked
-    for ((i=0; i < box_size; i++)); do
+    for ((i=0; i<box_size; i++)); do
         array_of_objects+=("${shuffled[$i]}")
     done
-
-    echo "New random box created!"
 }
-
 generate_random_box_from_file(){	
 	# if loading the file or picking a number fails, stop here
 	load_object_pool || return
 	prompt_for_box_size || return
-
 	generate_random_box
+   for i in "${!array_of_objects[@]}"; do
+    echo "[$i] ${array_of_objects[$i]}"
+	done
 	display_menu_options
 }
 
@@ -156,7 +154,7 @@ end_script(){
 			exit 0
 			;;
 		*)
-			exit_script   # If you type something else, just exit
+			end_script   # If you type something else, just exit
 			;;
 	esac
 }
@@ -215,7 +213,7 @@ check_user_input(){
 			list_boxes   # Shows all the saved files you have.
 			;;
 		9)
-			generate_random_box   # Picks a random file and shows the words inside.
+			generate_random_box_from_file   # Picks a random file and shows the words inside.
 			;;
 		10)
 			end_script   # Stops the program.
