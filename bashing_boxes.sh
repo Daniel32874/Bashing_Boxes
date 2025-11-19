@@ -121,25 +121,38 @@ prompt_for_box_size(){
 }
 
 generate_random_box() {
+    # Start with an empty box so we can put new stuff in it
     array_of_objects=()
 
-    # shuffle correctly
+    # Mix up all the items from the big list randomly
+    # mapfile makes sure each item stays together (like not splitting "Ice Cream" into two words)
     mapfile -t shuffled < <(printf "%s\n" "${object_pool[@]}" | shuf)
 
+    # Take the first few items from the shuffled list and put them in our box
     for ((i=0; i<box_size; i++)); do
         array_of_objects+=("${shuffled[$i]}")
     done
 }
+
 generate_random_box_from_file(){	
-	# if loading the file or picking a number fails, stop here
+	# Get all the items from the file
 	load_object_pool || return
+
+	# Ask how many items you want in your box
 	prompt_for_box_size || return
+
+	# Make the random box
 	generate_random_box
-   for i in "${!array_of_objects[@]}"; do
-    echo "[$i] ${array_of_objects[$i]}"
+
+	# Show each item on its own line with a number in front
+	for i in "${!array_of_objects[@]}"; do
+		echo "[$i] ${array_of_objects[$i]}"
 	done
+
+	# Go back to the main menu
 	display_menu_options
 }
+
 
 
 
